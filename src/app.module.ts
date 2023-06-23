@@ -6,6 +6,9 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { Restaurant } from './restaurants/entities/restaurants.entity';
+import { UsersModule } from './users/users.module';
+import { CommonModule } from './common/common.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -33,14 +36,15 @@ import { Restaurant } from './restaurants/entities/restaurants.entity';
       logging: process.env.NODE_ENV !== 'prod',
       // Database에서 돌아가는 모든 로그들을 확인,
       // production 환경이 아니면 logging 되지 않음
-      entities: [Restaurant],
+      entities: [User],
       // Database가 됨
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
-    RestaurantsModule,
+    UsersModule,
+    CommonModule,
     //root 모델 설정
   ],
   controllers: [],
