@@ -76,19 +76,17 @@ export class UserService {
       const token = this.jwtService.sign(user.id);
       return { ok: true, token };
     } catch (error) {
-      return { ok: false, error };
+      return { ok: false, error: '로그인할 수 없습니다.' };
     }
   }
 
   async findById(id: number): Promise<UserProfileOutput> {
     try {
-      const user = await this.users.findOne({ where: { id } });
-      if (user) {
-        return {
-          ok: true,
-          user: user,
-        };
-      }
+      const user = await this.users.findOneOrFail({ where: { id } });
+      return {
+        ok: true,
+        user: user,
+      };
     } catch (error) {
       return { ok: false, error: '사용자를 찾을 수 없습니다.' };
     }
@@ -140,7 +138,7 @@ export class UserService {
       return { ok: false, error: '인증을 확인할 수 없습니다.' };
     } catch (error) {
       console.log(error);
-      return { ok: false, error };
+      return { ok: false, error: '이메일을 확인할 수 없습니다.' };
     }
   }
 }
