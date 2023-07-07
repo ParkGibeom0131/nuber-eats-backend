@@ -6,7 +6,6 @@ import { Verification } from './entities/verification.entity';
 import { JwtService } from 'src/jwt/jwt.service';
 import { MailService } from 'src/mail/mail.service';
 import { Repository } from 'typeorm';
-import e from 'express';
 
 const mockRepository = () => ({
   findOne: jest.fn(),

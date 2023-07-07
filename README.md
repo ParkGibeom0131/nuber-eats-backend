@@ -2,7 +2,7 @@
 
 The Backend of Nuber Eats Clone
 
-## User Entity:
+## User Model
 
 - id
 - createdAt
@@ -12,10 +12,17 @@ The Backend of Nuber Eats Clone
 - password
 - role(client | owner | delivery)
 
-## User CRUD:
+## User CRUD
 
-- Create Account []
-- Log In []
-- See Profile []
-- Edit Profile []
-- Verify Email []
+- Create Account [✅]
+- Log In [✅]
+- See Profile [✅]
+- Edit Profile [✅]
+- Verify Email [✅]
+
+## Restaurant Model
+
+- name
+- category
+- address
+- coverImage

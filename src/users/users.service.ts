@@ -98,9 +98,17 @@ export class UserService {
   ): Promise<EditProfileOutput> {
     try {
       const user = await this.users.findOne({ where: { id } });
+      const checkEmail = await this.users.findOne({ where: { email } });
+      if (checkEmail) {
+        return {
+          ok: false,
+          error: '이미 사용 중인 이메일입니다.',
+        };
+      }
       if (email) {
         user.email = email;
         user.verified = false;
+        await this.verifications.delete({ user: { id: user.id } });
         const verification = await this.verifications.save(
           this.verifications.create({ user })
         );
