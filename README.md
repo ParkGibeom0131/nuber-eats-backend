@@ -26,3 +26,26 @@ The Backend of Nuber Eats Clone
 - category
 - address
 - coverImage
+
+## Restaurant CRUD
+
+- Edit Restaurant [✅]
+- Delete Restaurant [✅]
+
+- See Categories [✅]
+- See Restaurants by Category (pagination) [✅]
+- See Restaurants (pagination) [✅]
+- See Restaurant [✅]
+- Search Restaurant [✅]
+
+## Dish CRUD
+
+- Create Dish []
+- Edit Dish []
+- Delete Dish []
+
+## Orders CRUD
+
+- Orders Subscription (Owner, Customer, Delivery) []
+
+## Payments (CRON)
