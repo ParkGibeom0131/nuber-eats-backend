@@ -40,12 +40,12 @@ The Backend of Nuber Eats Clone
 
 ## Dish CRUD
 
-- Create Dish []
-- Edit Dish []
-- Delete Dish []
+- Create Dish [✅]
+- Edit Dish [✅]
+- Delete Dish [✅]
 
 ## Orders CRUD
 
+- Orders CRUD []
 - Orders Subscription (Owner, Customer, Delivery) []
-
-## Payments (CRON)
+- Payments (CRON) []

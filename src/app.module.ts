@@ -19,6 +19,10 @@ import { Restaurant } from './restaurants/entities/restaurant.entity';
 import { Category } from './restaurants/entities/category.entity';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { AuthModule } from './auth/auth.module';
+import { Dish } from './restaurants/entities/dish.entity';
+import { OrdersModule } from './orders/orders.module';
+import { Order } from './orders/entities/order.entity';
+import { OrderItem } from './orders/entities/order-item.entity';
 
 @Module({
   imports: [
@@ -51,7 +55,15 @@ import { AuthModule } from './auth/auth.module';
         process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
       // Database에서 돌아가는 모든 로그들을 확인,
       // production 환경이 아니면 logging 되지 않음
-      entities: [User, Verification, Restaurant, Category],
+      entities: [
+        User,
+        Verification,
+        Restaurant,
+        Category,
+        Dish,
+        Order,
+        OrderItem,
+      ],
       // Database가 됨
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -71,6 +83,7 @@ import { AuthModule } from './auth/auth.module';
       privateKey: process.env.PRIVATE_KEY,
     }),
     MailModule,
+    OrdersModule,
     //root 모델 설정
   ],
   controllers: [],
