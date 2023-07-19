@@ -23,6 +23,10 @@ import { Dish } from './restaurants/entities/dish.entity';
 import { OrdersModule } from './orders/orders.module';
 import { Order } from './orders/entities/order.entity';
 import { OrderItem } from './orders/entities/order-item.entity';
+import { Context } from 'apollo-server-core';
+import { CommonModule } from './common/common.module';
+
+const TOKEN_KEY = 'x-jwt';
 
 @Module({
   imports: [
@@ -69,7 +73,17 @@ import { OrderItem } from './orders/entities/order-item.entity';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      context: ({ req }) => ({ user: req['user'] }),
+      subscriptions: {
+        'graphql-ws': {
+          onConnect: (context: Context<any>) => {
+            const { connectionParams, extra } = context;
+            extra.token = connectionParams[TOKEN_KEY];
+          },
+        },
+      },
+      context: ({ req, extra }) => {
+        return { token: req ? req.headers[TOKEN_KEY] : extra.token };
+      },
     }),
     MailModule.forRoot({
       apiKey: process.env.MAILGUN_API_KEY,
@@ -84,19 +98,13 @@ import { OrderItem } from './orders/entities/order-item.entity';
     }),
     MailModule,
     OrdersModule,
-    //root 모델 설정
+    CommonModule,
+    //root 모듈 설정
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes({
-      path: '/graphql',
-      method: RequestMethod.POST,
-    });
-  }
-}
+export class AppModule {}
 
 // typeDefs: document 혹은 서버의 schema를 표현하는 것
 // resolvers: Query를 처리하고 mutate시키는 function
