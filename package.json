@@ -27,6 +27,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/graphql": "^12.0.1",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/schedule": "^3.0.1",
     "@nestjs/typeorm": "^10.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/got": "^9.6.12",
