@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Payment } from './entities/payment.entity';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import {
   CreatePaymentInput,
@@ -78,5 +78,20 @@ export class PaymentService {
         error: '결제를 로드할 수 없습니다.',
       };
     }
+  }
+
+  async checkPromotedRestaurants() {
+    const restaurants = await this.restaurants.find({
+      where: {
+        isPromoted: true,
+        promotedUntil: LessThan(new Date()),
+      },
+    });
+    console.log(restaurants);
+    restaurants.forEach(async (restaurant) => {
+      restaurant.isPromoted = false;
+      restaurant.promotedUntil = null;
+      await this.restaurants.save(restaurant);
+    });
   }
 }
