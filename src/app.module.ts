@@ -22,6 +22,7 @@ import { CommonModule } from './common/common.module';
 import { PaymentsModule } from './payments/payments.module';
 import { Payment } from './payments/entities/payment.entity';
 import { ScheduleModule } from '@nestjs/schedule';
+import { UploadsModule } from './uploads/uploads.module';
 
 const TOKEN_KEY = 'x-jwt';
 
@@ -42,6 +43,8 @@ const TOKEN_KEY = 'x-jwt';
         MAILGUN_API_KEY: Joi.string().required(),
         MAILGUN_DOMAIN_NAME: Joi.string().required(),
         MAILGUN_FROM_EMAIL: Joi.string().required(),
+        AWS_ACCESS_KEY: Joi.string().required(),
+        AWS_SECRET_ACCESS_KEY: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -99,6 +102,7 @@ const TOKEN_KEY = 'x-jwt';
     OrdersModule,
     CommonModule,
     PaymentsModule,
+    UploadsModule,
     //root 모듈 설정
   ],
   controllers: [],

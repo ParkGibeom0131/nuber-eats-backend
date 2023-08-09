@@ -10,7 +10,7 @@ import { Restaurant } from './entities/restaurant.entity';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
-} from './dtos/create-restaurant.dts';
+} from './dtos/create-restaurant.dto';
 import { RestaurantService } from './restaurants.service';
 import { AuthUser } from 'src/auth/auth-user.decorator';
 import { User } from 'src/users/entities/user.entity';
@@ -22,7 +22,7 @@ import {
 import {
   DeleteRestaurantInput,
   DeleteRestaurantOutput,
-} from './dtos/delete-restaurant.dts';
+} from './dtos/delete-restaurant.dto';
 import { Category } from './entities/category.entity';
 import { Query } from '@nestjs/graphql';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
@@ -37,7 +37,11 @@ import { Dish } from './entities/dish.entity';
 import { CreateDishInput, CreateDishOutput } from './dtos/create-dish.dto';
 import { EditDishInput, EditDishOutput } from './dtos/edit-dish.dto';
 import { DeleteDishInput, DeleteDishOutput } from './dtos/delete-dish.dto';
-import { MyRestaurantsOutput } from 'src/payments/dtos/my-restaurants.dto';
+import {
+  MyRestaurantInput,
+  MyRestaurantOutput,
+} from './dtos/my-restaurant.dto';
+import { MyRestaurantsOutput } from './dtos/my-restaurants.dto';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
@@ -59,6 +63,15 @@ export class RestaurantResolver {
   @Role(['Owner'])
   myRestaurants(@AuthUser() owner: User): Promise<MyRestaurantsOutput> {
     return this.restaurantService.myRestaurants(owner);
+  }
+
+  @Query((returns) => MyRestaurantOutput)
+  @Role(['Owner'])
+  myRestaurant(
+    @AuthUser() owner: User,
+    @Args('input') myRestaurantInput: MyRestaurantInput
+  ): Promise<MyRestaurantOutput> {
+    return this.restaurantService.myRestaurant(owner, myRestaurantInput);
   }
 
   @Mutation((returns) => EditRestaurantOutput)

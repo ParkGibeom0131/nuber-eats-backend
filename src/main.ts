@@ -6,6 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   //모든 파일은 AppModule로 import됨
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
   await app.listen(4000);
 }
 bootstrap();

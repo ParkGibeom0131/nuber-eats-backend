@@ -5,7 +5,7 @@ import { ILike, LessThan, Repository } from 'typeorm';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
-} from './dtos/create-restaurant.dts';
+} from './dtos/create-restaurant.dto';
 import { User } from 'src/users/entities/user.entity';
 import { Category } from './entities/category.entity';
 import {
@@ -16,7 +16,7 @@ import { CategoryRepository } from './repositories/category.repository';
 import {
   DeleteRestaurantInput,
   DeleteRestaurantOutput,
-} from './dtos/delete-restaurant.dts';
+} from './dtos/delete-restaurant.dto';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
 import { CategoryInput, CategoryOutput } from './dtos/category.dto';
 import { RestaurantsInput, RestaurantsOutput } from './dtos/restaurants.dto';
@@ -30,7 +30,11 @@ import { Dish } from './entities/dish.entity';
 import { EditDishInput, EditDishOutput } from './dtos/edit-dish.dto';
 import { DeleteDishInput, DeleteDishOutput } from './dtos/delete-dish.dto';
 import { Cron, Interval } from '@nestjs/schedule';
-import { MyRestaurantsOutput } from 'src/payments/dtos/my-restaurants.dto';
+import { MyRestaurantsOutput } from 'src/restaurants/dtos/my-restaurants.dto';
+import {
+  MyRestaurantInput,
+  MyRestaurantOutput,
+} from './dtos/my-restaurant.dto';
 
 @Injectable()
 export class RestaurantService {
@@ -57,6 +61,7 @@ export class RestaurantService {
       await this.restaurants.save(newRestaurant);
       return {
         ok: true,
+        restaurantId: newRestaurant.id,
       };
     } catch {
       return {
@@ -410,6 +415,27 @@ export class RestaurantService {
       });
       return {
         restaurants,
+        ok: true,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not find restaurants.',
+      };
+    }
+  }
+
+  async myRestaurant(
+    owner: User,
+    { id }: MyRestaurantInput
+  ): Promise<MyRestaurantOutput> {
+    try {
+      const restaurant = await this.restaurants.findOne({
+        where: { owner: { id: owner.id }, id },
+        relations: ['menu', 'orders'],
+      });
+      return {
+        restaurant,
         ok: true,
       };
     } catch {
