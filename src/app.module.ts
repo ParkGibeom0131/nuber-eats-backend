@@ -1,7 +1,7 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import * as Joi from 'joi';
-import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLModule, Subscription } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
@@ -23,8 +23,6 @@ import { PaymentsModule } from './payments/payments.module';
 import { Payment } from './payments/entities/payment.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { UploadsModule } from './uploads/uploads.module';
-
-const TOKEN_KEY = 'x-jwt';
 
 @Module({
   imports: [
@@ -74,16 +72,18 @@ const TOKEN_KEY = 'x-jwt';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      installSubscriptionHandlers: true,
       subscriptions: {
         'graphql-ws': {
           onConnect: (context: Context<any>) => {
             const { connectionParams, extra } = context;
-            extra.token = connectionParams[TOKEN_KEY];
+            extra.token = connectionParams['x-jwt'];
+            console.log('This is extra.token:', extra.token);
           },
         },
       },
       context: ({ req, extra }) => {
-        return { token: req ? req.headers[TOKEN_KEY] : extra.token };
+        return { token: req ? req.headers['x-jwt'] : extra.token };
       },
     }),
     ScheduleModule.forRoot(),
