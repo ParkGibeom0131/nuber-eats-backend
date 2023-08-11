@@ -85,7 +85,6 @@ import { UploadsModule } from './uploads/uploads.module';
           onConnect: (context: Context<any>) => {
             const { connectionParams, extra } = context;
             extra.token = connectionParams['x-jwt'];
-            console.log('This is extra.token:', extra.token);
           },
         },
       },
